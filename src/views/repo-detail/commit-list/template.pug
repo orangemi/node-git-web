@@ -9,4 +9,4 @@ div
     div
       span.author {{ commit.author }}
       | commited at 
-      span.commit-time {{ commit.time }}
+      span.commit-time {{ commit.time | fromNow }}

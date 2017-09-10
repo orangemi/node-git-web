@@ -2,9 +2,13 @@
 const Vue = require('vue').default
 const Router = require('vue-router').default
 const ElementUI = require('element-ui')
+require('element-ui/lib/theme-default/index.css')
+
+const { fromNow } = require('./plugins')
+
 Vue.use(Router)
 Vue.use(ElementUI)
-require('element-ui/lib/theme-default/index.css')
+Vue.use(fromNow)
 
 const Home = require('views/home')
 const router = new Router({
