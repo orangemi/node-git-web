@@ -1,0 +1,9 @@
+{
+  "router": {
+    "js": "/build/1c11cfd4516495232f3a.js"
+  },
+  "vendor": {
+    "js": "/build/61548468595d80a5a813.js",
+    "css": "/build/61548468595d80a5a813.css"
+  }
+}

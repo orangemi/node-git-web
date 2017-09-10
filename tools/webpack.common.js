@@ -1,7 +1,6 @@
 'use strict'
 const path = require('path')
 const webpack = require('webpack')
-const AssetsPlugin = require('assets-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
 
@@ -56,11 +55,6 @@ module.exports = {
   },
   plugins: [
     new CommonsChunkPlugin({names: 'vendor'}),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/),
-    new AssetsPlugin({
-      filename: 'assets.json',
-      path: path.resolve(__dirname, '../build'),
-      prettyPrint: true
-    })
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/)
   ]
 }
