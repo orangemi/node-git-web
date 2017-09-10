@@ -1,4 +1,5 @@
 div
   .navi
-    router-link.el-button(:to="{name: 'repo-list'}") Repos
-  file-list(:repo='repo' :path='path' branch='master')
+  .content
+    router-view
+  //- file-list(:repo='repo' :path='path' branch='master')

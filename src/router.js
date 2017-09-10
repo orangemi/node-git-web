@@ -18,9 +18,17 @@ const router = new Router({
     name: 'repo-list',
     component: resolve => require(['views/repo-list'], resolve)
   }, {
-    path: '/repos/:repo/:path?',
-    name: 'repo-detail',
-    component: resolve => require(['views/repo-detail'], resolve)
+    path: '/repos/:repo',
+    component: resolve => require(['views/repo-detail'], resolve),
+    children: [{
+      path: '',
+      name: 'repo-detail',
+      component: resolve => require(['views/repo-detail/default'], resolve),
+    }, {
+      path: 'branches/:branch/tree/:path?',
+      name: 'repo-branch-file-list',
+      component: resolve => require(['views/repo-detail/file-list'], resolve),
+    }]
   }]
 })
 Home.router = router

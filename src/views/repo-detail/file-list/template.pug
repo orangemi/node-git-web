@@ -1,14 +1,25 @@
 div
   //- pre {{ path }}
-  pre {{ path }}
-  el-button(:disabled='!path' v-if='!path') Go Parent
-  router-link.el-button(:to="{params: {path: parent}}" v-else-if='parent') Go Parent
-  router-link.el-button(:to="{params: {repo: repo, path: undefined}}" v-else) Go Parent
-  el-table(:data='files')
-    el-table-column(label='文件名' prop='name')
+  //- .navi
+    pre {{ path }}
+    el-button(:disabled='!path' v-if='!path') Go Parent
+    router-link.el-button(:to="{params: {path: parent}}" v-else-if='parent') Go Parent
+    router-link.el-button(:to="{params: {repo: repo, path: undefined}}" v-else) Go Parent
+  //- div
+    pre {{ paths }}
+  .navi-path.breadcrum
+    router-link(:to="{name: 'repo-detail'}") {{ repo }}
+    template(v-for='_path in paths')
+      span.sperator /
+      router-link(:to='{params: {path: _path.path}}') {{ _path.name }}
+
+  el-table(:data='files' v-if='files.length')
+    el-table-column(label='File' prop='name')
       template(scope='scope')
         router-link(:to='{params: {path: scope.row.path}}') {{ scope.row.name }}
     el-table-column(label='size' prop='size')
-  div(v-if='entry.sha')
+
+  div.file-blob(v-if='entry.sha')
+    header {{ entry.name }}
     //- a:entry='entry' 
     pre {{ blob }}

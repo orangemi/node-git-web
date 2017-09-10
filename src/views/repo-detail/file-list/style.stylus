@@ -1,0 +1,18 @@
+.navi-path.breadcrum
+  line-height: 26px
+  font-size: 16px
+  .sperator:before,.sperator:after
+    content: " "
+.file-blob
+  border: 1px solid #dfe6ec;
+  margin-top: 15px
+
+  header
+    background-color: #eef1f6
+    line-height: 30px
+    padding: 5px
+    font-weight: bold
+
+  pre
+    margin: 0
+    padding: 5px

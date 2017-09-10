@@ -1,20 +1,35 @@
 'use strict'
 const axios = require('axios')
 const template = require('./template.pug')
+require('./style.stylus')
 module.exports = template({
-  props: {
-    repo: String,
-    branch: String,
-    path: String
-  },
   data: () => ({
     files: [],
     entry: {},
     blob: ''
   }),
   computed: {
-    _path () {
-      return '/' + (this.path || '')
+    path () {
+      return this.$route.params.path || ''
+    },
+    branch () {
+      return this.$route.params.branch || ''
+    },
+    repo () {
+      return this.$route.params.repo || ''
+    },
+    paths () {
+      const paths = []
+      let previousPath = ''
+      this.path.split('/').forEach((name, i) => {
+        if (!name) return
+        previousPath += '/' + name
+        paths.push({
+          name: name,
+          path: previousPath.substring(1)
+        })
+      })
+      return paths
     },
     parent () {
       let path = this.path || ''
@@ -44,16 +59,25 @@ module.exports = template({
       if (Array.isArray(entry)) {
         this.files = resp.data
         // TODO check README.* OR something can render ...
+        await this.getReadme()
       } else {
         this.entry = resp.data
         await this.getBlob()
       }
     },
     async getBlob () {
-      const urlArray = ['/api/repos', this.repo, 'branches', this.branch, 'blob', this.path]
+      const urlArray = ['/api/repos', this.repo, 'branches', this.branch, 'blob', this.entry.path]
       const url = urlArray.join('/')
       const resp = await axios.get(url)
       this.blob = resp.data
+    },
+    async getReadme () {
+      this.files.forEach(file => {
+        if (/^readme\.(txt|md)/i.test(file.name)) {
+          this.entry = file
+        }
+      })
+      await this.getBlob()
     }
   }
 })
