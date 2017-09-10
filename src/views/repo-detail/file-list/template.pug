@@ -1,0 +1,14 @@
+div
+  //- pre {{ path }}
+  pre {{ path }}
+  el-button(:disabled='!path' v-if='!path') Go Parent
+  router-link.el-button(:to="{params: {path: parent}}" v-else-if='parent') Go Parent
+  router-link.el-button(:to="{params: {repo: repo, path: undefined}}" v-else) Go Parent
+  el-table(:data='files')
+    el-table-column(label='文件名' prop='name')
+      template(scope='scope')
+        router-link(:to='{params: {path: scope.row.path}}') {{ scope.row.name }}
+    el-table-column(label='size' prop='size')
+  div(v-if='entry.sha')
+    //- a:entry='entry' 
+    pre {{ blob }}

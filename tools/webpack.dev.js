@@ -1,11 +1,8 @@
 'use strict'
 
-const path = require('path')
 const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
-const AssetsPlugin = require('assets-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
 const buildConfig = require('./webpack.common')
 
 module.exports = webpackMerge(buildConfig, {
@@ -17,7 +14,9 @@ module.exports = webpackMerge(buildConfig, {
   ],
   devServer: {
     hot: false,
-    disableHostCheck: true
+    disableHostCheck: true,
+    port: 5011,
+    inline: false
   },
   devtool: 'source-map'
 })

@@ -1,0 +1,8 @@
+div
+  .navi
+    el-button(type='success' @click='showCreateRepoDialog = true') New Repo
+  el-dialog(:visible.sync='showCreateRepoDialog')
+    new-repo-dialog()
+  el-table(:data='repos')
+    el-table-column(label='Name')
+      template(scope='scope'): router-link(:to="{name: 'repo-detail', params: {repo: scope.row}}") {{ scope.row }}

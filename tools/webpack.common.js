@@ -11,7 +11,7 @@ module.exports = {
     vendor: [
       // js
       'regenerator-runtime/runtime', 'element-ui',
-      'moment', 'vue', 'vue-router',
+      'axios', 'moment', 'vue', 'vue-router',
       // css
       'element-ui/lib/theme-default/index.css'
     ]
