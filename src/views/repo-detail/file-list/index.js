@@ -58,7 +58,6 @@ module.exports = template({
       const entry = resp.data
       if (Array.isArray(entry)) {
         this.files = resp.data
-        // TODO check README.* OR something can render ...
         await this.getReadme()
       } else {
         this.entry = resp.data

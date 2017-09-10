@@ -3,6 +3,7 @@ const axios = require('axios')
 const template = require('./template.pug')
 module.exports = template({
   data: () => ({
+    branches: []
   }),
   computed: {
     repo () {
@@ -15,7 +16,6 @@ module.exports = template({
     }
   },
   mounted () {
-    console.log('default mounted')
     this.fetchDefaultBranch()
   },
   methods: {
@@ -23,7 +23,7 @@ module.exports = template({
       const urlArray = ['/api/repos', this.repo, 'branches']
       const url = urlArray.join('/')
       const resp = await axios.get(url)
-      const branches = resp.data
+      const branches = this.branches = resp.data
       this.$emit('branches', branches)
       if (branches.length) {
         this.$router.replace({name: 'repo-branch-file-list', params: {repo: this.repo, branch: branches[0].name}})

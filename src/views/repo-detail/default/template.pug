@@ -1,1 +1,5 @@
 div
+  div.tips(v-if='!branches.length')
+    p git remote origin git@host:{{ repo }}
+    p git commit -a -m 'init commit'
+    p git push origin master -u
