@@ -4,6 +4,7 @@ const template = require('./template.pug')
 require('./style.stylus')
 module.exports = template({
   data: () => ({
+    branches: [],
     files: [],
     entry: {},
     blob: ''
@@ -30,23 +31,35 @@ module.exports = template({
         })
       })
       return paths
-    },
-    parent () {
-      let path = this.path || ''
-      let paths = path.split('/')
-      paths.pop()
-      return paths.join('/')
     }
   },
   watch: {
     path () {
       this.fetchList()
+    },
+    branch () {
+      this.fetchList()
+    },
+    repo () {
+      this.fetchBranches()
+      this.fetchList()
     }
   },
   mounted () {
     this.fetchList()
+    this.fetchBranches()
   },
   methods: {
+    changeBranch (branch) {
+      this.$router.push({params: {branch: branch}})
+    },
+    async fetchBranches () {
+      this.branches = []
+      const urlArray = ['/api/repos', this.repo, 'branches']
+      const url = urlArray.join('/')
+      const resp = await axios.get(url)
+      this.branches = resp.data.map(branch => branch.name)
+    },
     async fetchList () {
       this.files = []
       this.entry = {}

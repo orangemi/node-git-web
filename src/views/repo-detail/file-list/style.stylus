@@ -4,7 +4,7 @@
   .sperator:before,.sperator:after
     content: " "
 .file-blob
-  border: 1px solid #dfe6ec;
+  border: 1px solid #dfe6ec
   margin-top: 15px
 
   header

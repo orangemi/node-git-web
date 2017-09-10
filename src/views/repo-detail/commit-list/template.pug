@@ -1,0 +1,12 @@
+div
+  .navi-path.breadcrum
+    div
+      el-select(:value='branch' @change='changeBranch')
+        el-option(v-for='_branch in branches' :label='_branch', :value='_branch')
+      router-link(:to="{name: 'repo-detail'}") {{ repo }}
+  ul.commit-list: li(v-for='commit in commits')
+    div.message {{ commit.message }}
+    div
+      span.author {{ commit.author }}
+      | commited at 
+      span.commit-time {{ commit.time }}

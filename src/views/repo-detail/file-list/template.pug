@@ -1,17 +1,14 @@
 div
-  //- pre {{ path }}
-  //- .navi
-    pre {{ path }}
-    el-button(:disabled='!path' v-if='!path') Go Parent
-    router-link.el-button(:to="{params: {path: parent}}" v-else-if='parent') Go Parent
-    router-link.el-button(:to="{params: {repo: repo, path: undefined}}" v-else) Go Parent
-  //- div
-    pre {{ paths }}
   .navi-path.breadcrum
-    router-link(:to="{name: 'repo-detail'}") {{ repo }}
-    template(v-for='_path in paths')
-      span.sperator /
-      router-link(:to='{params: {path: _path.path}}') {{ _path.name }}
+    div
+      router-link(:to="{name: 'repo-branch-commit-list'}") Commits
+    div
+      el-select(:value='branch' @change='changeBranch')
+        el-option(v-for='_branch in branches' :label='_branch', :value='_branch')
+      router-link(:to="{name: 'repo-detail'}") {{ repo }}
+      template(v-for='_path in paths')
+        span.sperator /
+        router-link(:to='{params: {path: _path.path}}') {{ _path.name }}
 
   el-table(:data='files' v-if='files.length')
     el-table-column(label='File' prop='name')
