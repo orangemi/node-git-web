@@ -5,10 +5,10 @@ const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 const AssetsPlugin = require('assets-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const buildConfig = require('./webpack.common')
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
 
 module.exports = webpackMerge(buildConfig, {
   bail: true,
@@ -29,6 +29,9 @@ module.exports = webpackMerge(buildConfig, {
     new UglifyJSPlugin({
       parallel: true,
       extractComments: false
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/index.ejs'
     }),
     new AssetsPlugin({
       filename: 'assets.json',
