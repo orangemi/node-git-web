@@ -1,4 +1,8 @@
 'use strict'
+const Vue = require('vue').default
+const highlightJs = require('vue-highlightjs')
+Vue.use(highlightJs)
+
 const axios = require('axios')
 const template = require('./template.pug')
 require('./style.stylus')
@@ -17,22 +21,8 @@ module.exports = template({
     blob: ''
   }),
   computed: {
-    // _routerName () {
-    //   return this.routerName ? this.routerName : this.$route.name
-    // },
-    paths () {
-      return []
-    //   const paths = []
-    //   let previousPath = ''
-    //   this.path.split('/').forEach((name, i) => {
-    //     if (!name) return
-    //     previousPath += '/' + name
-    //     paths.push({
-    //       name: name,
-    //       path: previousPath.substring(1)
-    //     })
-    //   })
-    //   return paths
+    fileType () {
+      return this.entry.name.split('.').pop() || ''
     }
   },
   watch: {
@@ -55,6 +45,7 @@ module.exports = template({
       if (!this.commit) return
       this.files = []
       this.entry = {}
+      this.blob = ''
       const path = this.path || ''
       const urlArray = ['/api/repos', this.repo, 'commits', this.commit, 'tree']
       if (path) urlArray.push(path)
@@ -72,7 +63,11 @@ module.exports = template({
     async getBlob () {
       const urlArray = ['/api/repos', this.repo, 'commits', this.commit, 'blob', this.entry.path]
       const url = urlArray.join('/')
-      const resp = await axios.get(url)
+      const resp = await axios.get(url, {
+        transformResponse: [(data) => {
+          return data
+        }]
+      })
       this.blob = resp.data
     },
     async getReadme () {

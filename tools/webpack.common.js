@@ -12,7 +12,8 @@ module.exports = {
       'regenerator-runtime/runtime', 'element-ui',
       'axios', 'moment', 'vue', 'vue-router',
       // css
-      'element-ui/lib/theme-default/index.css'
+      'element-ui/lib/theme-default/index.css',
+      'highlight.js/styles/github.css'
     ]
   },
   output: {

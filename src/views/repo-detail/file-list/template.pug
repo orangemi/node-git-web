@@ -19,5 +19,6 @@ div
 
   div.file-blob(v-if='entry.sha')
     header {{ entry.name }}
-    //- a:entry='entry' 
-    pre {{ blob }}
+    //- pre(v-highlightjs): code(class='javascript') {{ blob }}
+    //- pre {{ blob }}
+    pre(v-highlightjs='blob'): code(:class='fileType')
