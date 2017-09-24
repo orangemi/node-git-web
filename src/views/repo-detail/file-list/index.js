@@ -3,68 +3,60 @@ const axios = require('axios')
 const template = require('./template.pug')
 require('./style.stylus')
 module.exports = template({
+  props: {
+    // branch: String,
+    // tag: String,
+    urlPrefix: String,
+    path: String,
+    repo: String,
+    commit: String
+  },
   data: () => ({
-    branches: [],
     files: [],
     entry: {},
     blob: ''
   }),
   computed: {
-    path () {
-      return this.$route.params.path || ''
-    },
-    branch () {
-      return this.$route.params.branch || ''
-    },
-    repo () {
-      return this.$route.params.repo || ''
-    },
+    // _routerName () {
+    //   return this.routerName ? this.routerName : this.$route.name
+    // },
     paths () {
-      const paths = []
-      let previousPath = ''
-      this.path.split('/').forEach((name, i) => {
-        if (!name) return
-        previousPath += '/' + name
-        paths.push({
-          name: name,
-          path: previousPath.substring(1)
-        })
-      })
-      return paths
+      return []
+    //   const paths = []
+    //   let previousPath = ''
+    //   this.path.split('/').forEach((name, i) => {
+    //     if (!name) return
+    //     previousPath += '/' + name
+    //     paths.push({
+    //       name: name,
+    //       path: previousPath.substring(1)
+    //     })
+    //   })
+    //   return paths
     }
   },
   watch: {
     path () {
       this.fetchList()
     },
-    branch () {
+    commit () {
       this.fetchList()
     },
     repo () {
-      this.fetchBranches()
       this.fetchList()
     }
   },
   mounted () {
     this.fetchList()
-    this.fetchBranches()
+    // this.fetchBranches()
   },
   methods: {
-    changeBranch (branch) {
-      this.$router.push({params: {branch: branch}})
-    },
-    async fetchBranches () {
-      this.branches = []
-      const urlArray = ['/api/repos', this.repo, 'branches']
-      const url = urlArray.join('/')
-      const resp = await axios.get(url)
-      this.branches = resp.data.map(branch => branch.name)
-    },
     async fetchList () {
+      if (!this.commit) return
       this.files = []
       this.entry = {}
       const path = this.path || ''
-      const urlArray = ['/api/repos', this.repo, 'branches', this.branch, 'tree']
+      const urlArray = ['/api/repos', this.repo, 'commits', this.commit, 'tree']
       if (path) urlArray.push(path)
       const url = urlArray.join('/')
       const resp = await axios.get(url)
@@ -78,14 +70,14 @@ module.exports = template({
       }
     },
     async getBlob () {
-      const urlArray = ['/api/repos', this.repo, 'branches', this.branch, 'blob', this.entry.path]
+      const urlArray = ['/api/repos', this.repo, 'commits', this.commit, 'blob', this.entry.path]
       const url = urlArray.join('/')
       const resp = await axios.get(url)
       this.blob = resp.data
     },
     async getReadme () {
       this.files.forEach(file => {
-        if (/^readme\.(txt|md)/i.test(file.name)) {
+        if (/^readme(\.(txt|md))?$/i.test(file.name)) {
           this.entry = file
         }
       })

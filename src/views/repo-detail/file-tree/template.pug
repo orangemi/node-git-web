@@ -1,0 +1,13 @@
+div
+  div
+    branch-select(:repo='repo' :value='branch')
+    span.navi-paths.breadcrum
+      router-link(:to='{params: {path: ""}}') {{ repo }}
+      span(v-for='_path in paths')
+        span.separater /
+        router-link(:to='_path.to') {{ _path.name }}
+  file-list(
+    :commit='commit'
+    :repo='repo'
+    :urlPrefix='urlPrefix'
+    :path='path')

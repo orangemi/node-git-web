@@ -5,4 +5,4 @@ div
     new-repo-dialog()
   el-table(:data='repos')
     el-table-column(label='Name')
-      template(scope='scope'): router-link(:to="{name: 'repo-detail', params: {repo: scope.row}}") {{ scope.row }}
+      template(scope='scope'): router-link(:to="{name: 'repo-detail-summary', params: {repo: scope.row}}") {{ scope.row }}

@@ -1,11 +1,12 @@
 div
   .navi-path.breadcrum
-    div
+    //- div
       router-link(:to="{name: 'repo-branch-commit-list'}") Commits
-    div
+    //- div
       el-select(:value='branch' @change='changeBranch')
         el-option(v-for='_branch in branches' :label='_branch', :value='_branch')
       router-link(:to="{name: 'repo-detail'}") {{ repo }}
+    div.path
       template(v-for='_path in paths')
         span.sperator /
         router-link(:to='{params: {path: _path.path}}') {{ _path.name }}
@@ -13,7 +14,7 @@ div
   el-table(:data='files' v-if='files.length')
     el-table-column(label='File' prop='name')
       template(scope='scope')
-        router-link(:to='{params: {path: scope.row.path}}') {{ scope.row.name }}
+        router-link(:to="urlPrefix + '/' + scope.row.path") {{ scope.row.name }}
     el-table-column(label='size' prop='size')
 
   div.file-blob(v-if='entry.sha')

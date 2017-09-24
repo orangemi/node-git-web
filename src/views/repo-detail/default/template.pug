@@ -1,5 +1,9 @@
 div
-  div.tips(v-if='!branches.length')
-    p git remote origin git@host:{{ repo }}
-    p git commit -a -m 'init commit'
-    p git push origin master -u
+  header.repo-header
+    h3 {{ repo }}
+    img.avatar(:src='avatarUrl')
+  file-list(
+    :commit='commit'
+    :repo='repo'
+    :urlPrefix='urlPrefix'
+    path='')

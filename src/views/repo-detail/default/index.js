@@ -1,33 +1,31 @@
 'use strict'
-const axios = require('axios')
+// const axios = require('axios')
 const template = require('./template.pug')
 module.exports = template({
+  name: 'repo-detail-default',
+  components: {
+    'file-list': require('../file-list')
+  },
+  props: {
+    branchObject: Object
+  },
   data: () => ({
-    branches: []
   }),
   computed: {
     repo () {
       return this.$route.params.repo
+    },
+    commit () {
+      return this.branchObject.commit
+    },
+    urlPrefix () {
+      return ['', 'repos', this.repo, 'branches', this.branchObject.name, 'tree'].join('/')
     }
   },
   watch: {
-    repo () {
-      this.fetchDefaultBranch()
-    }
   },
   mounted () {
-    this.fetchDefaultBranch()
   },
   methods: {
-    async fetchDefaultBranch () {
-      const urlArray = ['/api/repos', this.repo, 'branches']
-      const url = urlArray.join('/')
-      const resp = await axios.get(url)
-      const branches = this.branches = resp.data
-      this.$emit('branches', branches)
-      if (branches.length) {
-        this.$router.replace({name: 'repo-branch-file-list', params: {repo: this.repo, branch: branches[0].name}})
-      }
-    }
   }
 })
