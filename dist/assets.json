@@ -1,9 +1,10 @@
 {
   "router": {
-    "js": "/build/7f99b8dcef1309ab56ce.js"
+    "js": "/build/6c16227357a65cae0dfe.js",
+    "css": "/build/6c16227357a65cae0dfe.css"
   },
   "vendor": {
-    "js": "/build/2aa1dac084b876a47afb.js",
-    "css": "/build/2aa1dac084b876a47afb.css"
+    "js": "/build/b78ea1b00e4861f01562.js",
+    "css": "/build/b78ea1b00e4861f01562.css"
   }
 }
