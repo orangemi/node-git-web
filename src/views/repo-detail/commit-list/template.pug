@@ -1,12 +1,26 @@
 div
-  .navi-path.breadcrum
-    div
-      el-select(:value='branch' @change='changeBranch')
-        el-option(v-for='_branch in branches' :label='_branch', :value='_branch')
-      router-link(:to="{name: 'repo-detail'}") {{ repo }}
-  ul.commit-list: li(v-for='commit in commits')
-    div.message {{ commit.message }}
-    div
-      span.author {{ commit.author }}
-      | commited at 
-      span.commit-time {{ commit.time | fromNow }}
+  div
+    branch-select(:repo='repo' :value='branchName' @input='checkout')
+    span.navi-paths.breadcrum
+      router-link(:to='{params: {path: ""}}') {{ repo }}
+  div
+    ul.commit-list
+      li.commit-row(v-for='_commit in commits')
+        .avatar: img(:src='_commit.avatarUrl')
+        .commit-content
+          div.commit-message: a(href='#') {{ _commit.message }}
+          div.commit-commiter
+            a.commit-author(href='#') {{ _commit.author }}
+            |
+            | commited
+            |
+            el-tooltip
+              div(slot='content') {{ _commit.updated | date }}
+              span.commit-time {{ _commit.updated | fromNow }}
+        .commit-actions
+          div.commit-sha
+            el-tooltip
+              div(slot='content') {{ _commit.commit }}
+              span {{ _commit.commit.substring(0, 10) }}
+          div: router-link.el-button(:to="'/repos/' + repo + '/' + 'commits/' + _commit.commit + '/tree'") Browse Files
+        //- pre {{ _commit }}

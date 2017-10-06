@@ -74,7 +74,7 @@ module.exports = template({
           this.entry = file
         }
       })
-      await this.getBlob()
+      if (this.entry && this.entry.path) await this.getBlob()
     }
   }
 })

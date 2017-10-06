@@ -32,15 +32,23 @@ const router = new Router({
       name: 'repo-detail-summary',
       component: resolve => require(['views/repo-detail/default'], resolve)
     }, {
-      path: 'branches/:branch(.*)/tree/:path(.*)?',
+      path: 'branches/:branch/tree/:path(.*)?',
       name: 'repo-branch-file-tree',
       component: resolve => require(['views/repo-detail/file-tree'], resolve)
     }, {
-      path: 'branches/:branch(.*)/blob/:path',
-      name: 'repo-branch-commit-list',
+      path: 'tags/:tag/tree/:path(.*)?',
+      name: 'repo-tag-file-tree',
+      component: resolve => require(['views/repo-detail/file-tree'], resolve)
+    }, {
+      path: 'commits/:commit/tree/:path(.*)?',
+      name: 'repo-commit-file-tree',
+      component: resolve => require(['views/repo-detail/file-tree'], resolve)
+    }, {
+      path: 'branches/:branch/blob/:path',
+      name: 'repo-branch-commit-list2',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }, {
-      path: 'branches/:branch(.*)/commits',
+      path: 'branches/:branch/commits',
       name: 'repo-branch-commit-list',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }]

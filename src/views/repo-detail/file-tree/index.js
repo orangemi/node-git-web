@@ -1,4 +1,5 @@
 'use strict'
+const axios = require('axios')
 const template = require('./template.pug')
 require('./style.stylus')
 module.exports = template({
@@ -8,14 +9,23 @@ module.exports = template({
     'file-list': require('../file-list')
   },
   props: {
-    branchObject: Object
+    // branchObject: Object
   },
   data: () => ({
-    currentBranch: {}
+    currentBranchObject: {}
   }),
   computed: {
+    branchName () {
+      return this.$route.params.branch
+    },
+    tagName () {
+      return this.$route.params.tag
+    },
+    commitName () {
+      return this.$route.params.commit
+    },
     branch () {
-      return this.currentBranch.name || ''
+      return this.currentBranchObject.name || ''
     },
     path () {
       return this.$route.params.path || ''
@@ -38,33 +48,87 @@ module.exports = template({
       return this.$route.params.repo
     },
     commit () {
-      return this.currentBranch.commit
+      return this.currentBranchObject.commit
     },
     urlPrefix () {
       let typeName = 'commits'
-      let typeId = this.currentBranch.commit
-      if (this.currentBranch.isBranch) {
+      let typeId = this.currentBranchObject.commit
+      if (this.currentBranchObject.isBranch) {
         typeName = 'branches'
-        typeId = this.branch
-      } else if (this.currentBranch.isTag) {
+        typeId = encodeURIComponent(this.branch)
+      } else if (this.currentBranchObject.isTag) {
         typeName = 'tags'
-        typeId = this.branch
+        typeId = encodeURIComponent(this.branch)
       }
       return ['', 'repos', this.repo, typeName, typeId, 'tree'].join('/')
     }
   },
   watch: {
-    branchObject (branchObject) {
-      this.checkout(branchObject)
-    }
+    // currentBranchObject (branchObject) {
+      // console.log('branchObject watcher', branchObject.name)
+      // if (branchObject.isBranch) {
+      //   this.$router.push({
+      //     name: 'repo-branch-file-tree',
+      //     params: {branch: branchObject.name}
+      //   })
+      // } else if (branchObject.isTag) {
+      //   this.$router.push({
+      //     name: 'repo-tag-file-tree',
+      //     params: {tag: branchObject.name}
+      //   })
+      // } else {
+      //   this.$router.push({
+      //     name: 'repo-commit-file-tree',
+      //     params: {commit: branchObject.name}
+      //   })
+      // }
+    // }
   },
   mounted () {
-    // this.checkout(this.branchObject)
+    this.init()
   },
   methods: {
+    async init () {
+      if (this.branchName) {
+        const url = ['/api/repos', this.repo, 'branches', this.branchName].join('/')
+        const resp = await axios.get(url)
+        this.currentBranchObject = resp.data
+      } else if (this.tagName) {
+        const url = ['/api/repos', this.repo, 'tags', this.tagName].join('/')
+        const resp = await axios.get(url)
+        this.currentBranchObject = resp.data
+      } else if (this.commitName) {
+        const url = ['/api/repos', this.repo, 'commits', this.commitName].join('/')
+        const resp = await axios.get(url)
+        this.currentBranchObject = resp.data
+      }
+    },
     checkout (branchObject) {
-      console.log('checkout', branchObject.name, branchObject)
-      this.currentBranch = branchObject
+      if (branchObject.isBranch) {
+        this.$router.push({
+          name: 'repo-branch-file-tree',
+          params: {
+            branch: branchObject.name,
+            path: this.path
+          }
+        })
+      } else if (branchObject.isTag) {
+        this.$router.push({
+          name: 'repo-tag-file-tree',
+          params: {
+            tag: branchObject.name,
+            path: this.path
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'repo-commit-file-tree',
+          params: {
+            commit: branchObject.name,
+            path: this.path
+          }
+        })
+      }
     }
   }
 })

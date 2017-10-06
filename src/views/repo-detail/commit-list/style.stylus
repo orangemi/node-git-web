@@ -1,18 +1,47 @@
-.navi-path.breadcrum
+.navi-paths.breadcrum
   line-height: 26px
   font-size: 16px
-  .sperator:before,.sperator:after
+  .separater:before,.separater:after
     content: " "
-ul.commit-list
+
+.commit-list
+  list-style: none
   margin: 0
   padding: 0
-  margin-top: 15px
-  li
+  border: solid 1px #ccc
+  width: 100%
+
+  .commit-row
+    display: flex
     margin: 0
-    padding: 0
-    border: 1px solid #dfe6ec
-    list-style: none
-    .message
-      font-size: 16px
-    .author
-      font-style: italic
+    padding: 10px 0
+    border-bottom: 1px solid #eee
+    vertical-align: middle
+    align-items: center
+    height: 50px
+    
+    &:hover
+      background: #eee
+
+    .avatar
+      width: 46px
+      padding: 5px
+      padding-right: 10px
+      img
+        width: 40px
+        height: 40px
+        border-radius: 20px
+      // a
+      //   color: #000
+    .commit-content
+      flex-grow: 1
+      padding-right: 10px
+      .commit-message
+        font-weight: 600
+    .commit-actions
+      display: flex
+      vertical-align: middle
+      align-items: center
+
+      .commit-sha
+        padding-right: 10px
