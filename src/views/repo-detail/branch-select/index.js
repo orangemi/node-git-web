@@ -34,9 +34,8 @@ module.exports = template({
       const url = ['', 'api', 'repos', this.repo, 'branches'].join('/')
       const resp = await axios.get(url)
       this.branches = resp.data
-      console.log('hhhh', this.branches)
     },
-    onInput () {
+    onInput (value) {
       this.$emit('input', this.currentBranch)
     }
   }

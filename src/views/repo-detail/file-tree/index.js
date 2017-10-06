@@ -10,9 +10,12 @@ module.exports = template({
   props: {
     branchObject: Object
   },
+  data: () => ({
+    currentBranch: {}
+  }),
   computed: {
     branch () {
-      return this.branchObject.name
+      return this.currentBranch.name || ''
     },
     path () {
       return this.$route.params.path || ''
@@ -35,24 +38,33 @@ module.exports = template({
       return this.$route.params.repo
     },
     commit () {
-      return this.branchObject.commit
+      return this.currentBranch.commit
     },
     urlPrefix () {
       let typeName = 'commits'
-      let typeId = this.branchObject.commit
-      if (this.branchObject.isBranch) {
+      let typeId = this.currentBranch.commit
+      if (this.currentBranch.isBranch) {
         typeName = 'branches'
         typeId = this.branch
-      } else if (this.branchObject.isTag) {
+      } else if (this.currentBranch.isTag) {
         typeName = 'tags'
         typeId = this.branch
       }
       return ['', 'repos', this.repo, typeName, typeId, 'tree'].join('/')
     }
   },
+  watch: {
+    branchObject (branchObject) {
+      this.checkout(branchObject)
+    }
+  },
+  mounted () {
+    // this.checkout(this.branchObject)
+  },
   methods: {
-    init () {
-      console.log(this.$route)
+    checkout (branchObject) {
+      console.log('checkout', branchObject.name, branchObject)
+      this.currentBranch = branchObject
     }
   }
 })

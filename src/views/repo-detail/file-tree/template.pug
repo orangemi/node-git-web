@@ -1,6 +1,6 @@
 div
   div
-    branch-select(:repo='repo' :value='branch')
+    branch-select(:repo='repo' :value='branch' @input='checkout')
     span.navi-paths.breadcrum
       router-link(:to='{params: {path: ""}}') {{ repo }}
       span(v-for='_path in paths')

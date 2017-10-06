@@ -8,8 +8,6 @@ const template = require('./template.pug')
 require('./style.stylus')
 module.exports = template({
   props: {
-    // branch: String,
-    // tag: String,
     urlPrefix: String,
     path: String,
     repo: String,

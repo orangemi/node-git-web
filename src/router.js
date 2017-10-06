@@ -4,11 +4,13 @@ const Router = require('vue-router').default
 const ElementUI = require('element-ui')
 require('element-ui/lib/theme-default/index.css')
 
-const { fromNow } = require('./plugins')
-
 Vue.use(Router)
 Vue.use(ElementUI)
+
+const { fromNow, date, size } = require('./plugins')
 Vue.use(fromNow)
+Vue.use(date)
+Vue.use(size)
 
 const Home = require('views/home')
 const router = new Router({
@@ -30,15 +32,15 @@ const router = new Router({
       name: 'repo-detail-summary',
       component: resolve => require(['views/repo-detail/default'], resolve)
     }, {
-      path: 'branches/:branch/tree/:path(.*)?',
+      path: 'branches/:branch(.*)/tree/:path(.*)?',
       name: 'repo-branch-file-tree',
       component: resolve => require(['views/repo-detail/file-tree'], resolve)
     }, {
-      path: 'branches/:branch/blob/:path',
+      path: 'branches/:branch(.*)/blob/:path',
       name: 'repo-branch-commit-list',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }, {
-      path: 'branches/:branch/commits',
+      path: 'branches/:branch(.*)/commits',
       name: 'repo-branch-commit-list',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }]

@@ -1,11 +1,5 @@
 div
   .navi-path.breadcrum
-    //- div
-      router-link(:to="{name: 'repo-branch-commit-list'}") Commits
-    //- div
-      el-select(:value='branch' @change='changeBranch')
-        el-option(v-for='_branch in branches' :label='_branch', :value='_branch')
-      router-link(:to="{name: 'repo-detail'}") {{ repo }}
     div.path
       template(v-for='_path in paths')
         span.sperator /
@@ -15,10 +9,17 @@ div
     el-table-column(label='File' prop='name')
       template(scope='scope')
         router-link(:to="urlPrefix + '/' + scope.row.path") {{ scope.row.name }}
-    el-table-column(label='size' prop='size')
+    el-table-column(label='Commit')
+      template(scope='scope')
+        router-link(v-if='scope.row.lastCommit' :to="'/commits/' + scope.row.lastCommit.commit") {{ scope.row.lastCommit.message.substring(0, 50) }}
+    el-table-column(label='Size')
+      template(scope='scope')
+        div(v-if='scope.row.isFile') {{ scope.row.size | size }}
+    el-table-column(label='Last Updated')
+      template(scope='scope')
+        div(v-if='scope.row.lastCommit') {{ scope.row.lastCommit.updated | fromNow }}
+    
 
   div.file-blob(v-if='entry.sha')
     header {{ entry.name }}
-    //- pre(v-highlightjs): code(class='javascript') {{ blob }}
-    //- pre {{ blob }}
     pre(v-highlightjs='blob'): code(:class='fileType')

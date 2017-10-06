@@ -1,2 +1,2 @@
-el-select(:value='value' value-key='name' @input='onInput')
+el-select(v-model='branchName' value-key='name' @input='onInput')
   el-option(v-for='_branch in branches' :label='_branch.name' :value='_branch.name')
