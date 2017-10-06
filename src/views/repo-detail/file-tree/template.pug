@@ -1,4 +1,7 @@
 div
+  ul.navi
+    //- li: router-link(:to='')
+    li: router-link(:to='commitUrl') commits
   div
     branch-select(:repo='repo' v-model='currentBranchObject' @input='checkout')
     span.navi-paths.breadcrum

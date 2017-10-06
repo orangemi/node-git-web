@@ -11,13 +11,17 @@ div
         router-link(:to="urlPrefix + '/' + scope.row.path") {{ scope.row.name }}
     el-table-column(label='Commit')
       template(scope='scope')
-        router-link(v-if='scope.row.lastCommit' :to="'/commits/' + scope.row.lastCommit.commit") {{ scope.row.lastCommit.message.substring(0, 50) }}
+        router-link(v-if='scope.row.lastCommit' :to="'/repos/' + repo + '/commits/' + scope.row.lastCommit.commit + '/commits'") {{ scope.row.lastCommit.message.substring(0, 50) }}
     el-table-column(label='Size')
       template(scope='scope')
-        div(v-if='scope.row.isFile') {{ scope.row.size | size }}
+        div: el-tooltip(v-if='scope.row.isFile')
+          div(slot='content') {{ scope.row.size }}
+          div {{ scope.row.size | size }}
     el-table-column(label='Last Updated')
       template(scope='scope')
-        div(v-if='scope.row.lastCommit') {{ scope.row.lastCommit.updated | fromNow }}
+        div: el-tooltip(v-if='scope.row.lastCommit')
+          div(slot='content') {{ scope.row.lastCommit.updated | date }}
+          div {{ scope.row.lastCommit.updated | fromNow }}
     
 
   div.file-blob(v-if='entry.sha')

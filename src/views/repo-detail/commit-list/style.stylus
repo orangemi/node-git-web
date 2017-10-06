@@ -14,18 +14,17 @@
   .commit-row
     display: flex
     margin: 0
-    padding: 10px 0
+    padding: 10px
     border-bottom: 1px solid #eee
     vertical-align: middle
     align-items: center
-    height: 50px
+    min-height: 50px
     
     &:hover
       background: #eee
 
     .avatar
       width: 46px
-      padding: 5px
       padding-right: 10px
       img
         width: 40px

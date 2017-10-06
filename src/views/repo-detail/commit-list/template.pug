@@ -1,8 +1,8 @@
 div
   div
-    branch-select(:repo='repo' :value='branchName' @input='checkout')
+    branch-select(:repo='repo' v-model='currentBranchObject' @input='checkout')
     span.navi-paths.breadcrum
-      router-link(:to='{params: {path: ""}}') {{ repo }}
+      router-link(:to='urlPrefix') {{ repo }}
   div
     ul.commit-list
       li.commit-row(v-for='_commit in commits')

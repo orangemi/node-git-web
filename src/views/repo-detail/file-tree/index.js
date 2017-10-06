@@ -8,9 +8,6 @@ module.exports = template({
     'branch-select': require('../branch-select'),
     'file-list': require('../file-list')
   },
-  props: {
-    // branchObject: Object
-  },
   data: () => ({
     currentBranchObject: {}
   }),
@@ -24,7 +21,7 @@ module.exports = template({
     commitName () {
       return this.$route.params.commit
     },
-    branch () {
+    name () {
       return this.currentBranchObject.name || ''
     },
     path () {
@@ -50,39 +47,23 @@ module.exports = template({
     commit () {
       return this.currentBranchObject.commit
     },
+    commitUrl () {
+      return this.urlPrefix.replace(/tree$/, 'commits')
+    },
     urlPrefix () {
       let typeName = 'commits'
       let typeId = this.currentBranchObject.commit
       if (this.currentBranchObject.isBranch) {
         typeName = 'branches'
-        typeId = encodeURIComponent(this.branch)
+        typeId = encodeURIComponent(this.name)
       } else if (this.currentBranchObject.isTag) {
         typeName = 'tags'
-        typeId = encodeURIComponent(this.branch)
+        typeId = encodeURIComponent(this.name)
       }
       return ['', 'repos', this.repo, typeName, typeId, 'tree'].join('/')
     }
   },
   watch: {
-    // currentBranchObject (branchObject) {
-      // console.log('branchObject watcher', branchObject.name)
-      // if (branchObject.isBranch) {
-      //   this.$router.push({
-      //     name: 'repo-branch-file-tree',
-      //     params: {branch: branchObject.name}
-      //   })
-      // } else if (branchObject.isTag) {
-      //   this.$router.push({
-      //     name: 'repo-tag-file-tree',
-      //     params: {tag: branchObject.name}
-      //   })
-      // } else {
-      //   this.$router.push({
-      //     name: 'repo-commit-file-tree',
-      //     params: {commit: branchObject.name}
-      //   })
-      // }
-    // }
   },
   mounted () {
     this.init()

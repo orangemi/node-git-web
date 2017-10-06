@@ -48,8 +48,16 @@ const router = new Router({
       name: 'repo-branch-commit-list2',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }, {
+      path: 'commits/:commit/commits',
+      name: 'repo-commit-list',
+      component: resolve => require(['views/repo-detail/commit-list'], resolve)
+    }, {
       path: 'branches/:branch/commits',
       name: 'repo-branch-commit-list',
+      component: resolve => require(['views/repo-detail/commit-list'], resolve)
+    }, {
+      path: 'tags/:tag/commits',
+      name: 'repo-tag-commit-list',
       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }]
   }]
