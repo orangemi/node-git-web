@@ -24,6 +24,11 @@ div
           div {{ scope.row.lastCommit.updated | fromNow }}
     
 
-  div.file-blob(v-if='entry.sha')
-    header {{ entry.name }}
-    pre(v-highlightjs='blob'): code(:class='fileType')
+  div.file-blob(v-if='canShowEntry')
+    header
+      div.blob-filename {{ entry.name }}
+      div.blob-actions
+        a.el-button(:href="'/api/repos/' + repo + '/commits/' + commit + '/blob/' + path" :download='filename') Download
+
+    pre(v-if='canShowBlob' v-highlightjs='blob'): code(:class='fileType')
+    div.too-large-notice(v-else) File too large to show

@@ -1,2 +1,12 @@
 body
   font-family: sans-serif
+  a:visited,
+  a:link,
+  a:active
+    color: #000
+    text-decoration: none
+  a:hover
+    color: #000
+    text-decoration: underline
+    
+  

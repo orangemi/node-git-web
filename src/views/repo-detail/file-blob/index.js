@@ -14,7 +14,6 @@ module.exports = template({
     commit: String
   },
   data: () => ({
-    files: [],
     entry: {},
     blob: ''
   }),
@@ -24,9 +23,6 @@ module.exports = template({
     },
     fileType () {
       return this.filename.split('.').pop() || ''
-    },
-    canShowEntry () {
-      return !!this.entry.sha
     },
     canShowBlob () {
       return this.entry.size < 10 * 1024
@@ -50,24 +46,14 @@ module.exports = template({
   methods: {
     async fetchList () {
       if (!this.commit) return
-      this.files = []
       this.entry = {}
       this.blob = ''
-      const path = this.path || ''
-      const urlArray = ['/api/repos', this.repo, 'commits', this.commit, 'tree']
-      if (path) urlArray.push(path)
-      const url = urlArray.join('/')
+      const url = ['/api/repos', this.repo, 'commits', this.commit, 'tree', this.path].join('/')
       const resp = await axios.get(url)
-      const entry = resp.data
-      if (Array.isArray(entry)) {
-        this.files = resp.data
-        await this.getReadme()
-      } else {
-        this.entry = resp.data
-        this.files = [this.entry]
-        if (this.entry.size < 2 * 1024 * 1024) {
-          await this.getBlob()
-        }
+      this.entry = resp.data
+      if (!this.entry.isFile) { throw new Error('entry not a file') }
+      if (this.entry.size < 2 * 1024 * 1024) {
+        await this.getBlob()
       }
     },
     async getBlob () {
@@ -77,14 +63,6 @@ module.exports = template({
         transformResponse: [data => data]
       })
       this.blob = resp.data
-    },
-    async getReadme () {
-      this.files.forEach(file => {
-        if (/^readme(\.(txt|md))?$/i.test(file.name)) {
-          this.entry = file
-        }
-      })
-      if (this.entry && this.entry.path) await this.getBlob()
     }
   }
 })
