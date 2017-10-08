@@ -5,12 +5,20 @@
     content: " "
 
 .commit-list
-  list-style: none
-  margin: 0
-  padding: 0
-  border: solid 1px #ccc
-  width: 100%
 
+  header
+    display: flex
+    background-color: #eef1f6
+    line-height: 30px
+    padding: 5px
+
+  .commit-rows
+    list-style: none
+    margin: 0
+    padding: 0
+    border: solid 1px #ccc
+    width: 100%
+    
   .commit-row
     display: flex
     margin: 0

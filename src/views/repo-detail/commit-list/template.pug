@@ -3,8 +3,9 @@ div
     branch-select(:repo='repo' v-model='currentBranchObject' @input='checkout')
     span.navi-paths.breadcrum
       router-link(:to='urlPrefix') {{ repo }}
-  div
-    ul.commit-list
+  div.commit-list
+    header.commit-header Commits
+    ul.commit-rows
       li.commit-row(v-for='_commit in commits')
         .avatar: img(:src='_commit.avatarUrl')
         .commit-content

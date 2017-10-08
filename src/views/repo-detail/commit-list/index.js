@@ -6,7 +6,6 @@ module.exports = template({
   name: 'repo-detail-branch-tree',
   components: {
     'branch-select': require('../branch-select')
-    // 'file-list': require('../file-list')
   },
   data: () => ({
     currentBranchObject: {},
@@ -25,23 +24,6 @@ module.exports = template({
     name () {
       return this.currentBranchObject.name || ''
     },
-    // path () {
-    //   return this.$route.params.path || ''
-    // },
-    // paths () {
-    //   let pathPrefix = ''
-    //   const result = []
-    //   const pathArray = this.path.split('/')
-    //   pathArray.forEach(name => {
-    //     if (!name) return
-    //     result.push({
-    //       name: name,
-    //       to: this.urlPrefix + pathPrefix + '/' + name
-    //     })
-    //     pathPrefix += '/' + name
-    //   })
-    //   return result
-    // },
     repo () {
       return this.$route.params.repo
     },
