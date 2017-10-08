@@ -6,3 +6,5 @@ Road Map
   - [ ] Commits
   - [ ] Branches
   - [ ] Tags
+- [ ] Add readme syntax (not only use highlightjs)
+- [ ] Add commit diff
