@@ -2,41 +2,65 @@
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
+const AssetsPlugin = require('assets-webpack-plugin')
+// const SplitChunksPlugin = webpack.optimize.optimization.splitChunks
+const resolve = (dir) => path.join(__dirname, '..', dir)
 
 module.exports = {
   entry: {
-    router: path.resolve(__dirname, '../src'),
+    main: resolve('src/index.ts'),
     vendor: [
       // js
-      'regenerator-runtime/runtime', 'element-ui',
-      'axios', 'moment', 'vue', 'vue-router',
+      // 'regenerator-runtime/runtime',
+      'vue', 'vue-router', 'element-ui',
+      // 'vue-analytics',
       // css
-      'element-ui/lib/theme-default/index.css',
-      'highlight.js/styles/github.css'
+      'element-ui/lib/theme-chalk/index.css'
     ]
   },
   output: {
-    path: path.resolve(__dirname, '../build'),
+    path: resolve('build'),
     filename: '[name].bundle.js',
     chunkFilename: '[chunkhash].js',
     publicPath: '/build/'
   },
   resolve: {
+    extensions: ['.ts', '.js'],
     alias: {
-      assets: path.resolve(__dirname, '../src/assets'),
-      components: path.resolve(__dirname, '../src/components'),
-      views: path.resolve(__dirname, '../src/views')
+      assets: resolve('src/assets'),
+      components: resolve('src/components'),
+      views: resolve('src/views'),
+      service: resolve('src/service')
     }
   },
   module: {
-    loaders: [
+    rules: [
+      { test: /\.ts$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
+      },
+      // { test: /\.tsx?$/,
+      //   exclude: /node_modules/,
+      //   loader: 'vue-ts-loader'
+      // },
+      //   use: [{
+      //     loader: 'ts-loader',
+      //     options: {
+      //       appendTsSuffixTo: [/\.vue$/]
+      //     }
+      //   }]
+      // },
       { test: /\.js$/,
         exclude: /node_modules/,
         options: { plugins: ['transform-regenerator'], presets: ['es2015'] },
         loader: 'babel-loader' },
-      { test: /template\.pug$/,
-        loader: ['vue-template-loader', 'pug-html-loader'] },
+
+      { test: /\.vue$/,
+        loader: 'vue-loader' },
+      { test: /\.pug$/,
+        loader: 'pug-html-loader' },
       { test: /\.styl(us)?$/,
         use: ExtractTextPlugin.extract({
           use: ['css-loader', 'resolve-url-loader', {
@@ -48,14 +72,35 @@ module.exports = {
       { test: /\.(woff|woff2)(\?.*)?$/,
         loader: 'url-loader',
         options: { prefix: 'font/', limit: 5000 } },
-      { test: /\.(svg|ttf|eot)(\?.*)?$/,
+      { test: /\.ttf(\?.*)?$/,
+        loader: 'url-loader',
+        options: { limit: 10000, mimetype: 'application/octet-stream' } },
+      { test: /\.svg(\?.*)?$/,
+        loader: 'file-loader' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'file-loader' },
       { test: /\.css$/,
         use: ExtractTextPlugin.extract({ use: 'css-loader' }) }
     ]
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
+  },
   plugins: [
-    new CommonsChunkPlugin({names: 'vendor'}),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/)
-  ]
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/),
+    new AssetsPlugin({
+      filename: 'assets.json',
+      path: resolve('build'),
+      prettyPrint: true
+    })
+  ],
+  mode: 'production'
 }

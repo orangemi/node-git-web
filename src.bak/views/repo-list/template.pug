@@ -1,7 +1,7 @@
 div
-  //- .navi
+  .navi
     el-button(type='success' @click='showCreateRepoDialog = true') New Repo
-  //- el-dialog(:visible.sync='showCreateRepoDialog')
+  el-dialog(:visible.sync='showCreateRepoDialog')
     new-repo-dialog()
   el-table(:data='repos')
     el-table-column(label='Name')

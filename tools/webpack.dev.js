@@ -6,6 +6,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const buildConfig = require('./webpack.common')
 
 module.exports = webpackMerge(buildConfig, {
+  mode: 'development',
+  output: {
+    chunkFilename: '[name].bundle.js'
+  },
   plugins: [
     new ExtractTextPlugin('[name].bundle.css'),
     new webpack.DefinePlugin({
