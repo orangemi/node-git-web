@@ -1,6 +1,5 @@
 import Router from 'vue-router'
 
-// const Home = require('views/home')
 const router = new Router({
   base: '/',
   mode: 'history',

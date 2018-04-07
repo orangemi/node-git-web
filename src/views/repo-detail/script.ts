@@ -20,6 +20,7 @@ interface CommitInfo {
 export default class RepoDetailView extends Vue {
   repos: Array<RepoInfo> = []
   commitInfo: CommitInfo = {hash: ''}
+  defaultBranch: string = ''
 
   get repo () {
     return this.$route.params.repo
@@ -28,7 +29,7 @@ export default class RepoDetailView extends Vue {
     return this.$route.params.path || ''
   }
   get branch () {
-    return this.$route.params.branch || ''
+    return this.$route.params.branch || this.defaultBranch
   }
   get tag () {
     return this.$route.params.tag || ''
@@ -50,8 +51,8 @@ export default class RepoDetailView extends Vue {
       this.commitInfo = await this.fetchCommit()
     } else {
       const branches = await this.fetchBranches()
-      const branch = branches[0]
-      this.commitInfo = await this.fetchBranch(branch)
+      this.defaultBranch = branches[0]
+      this.commitInfo = await this.fetchBranch(this.defaultBranch)
     }
   }
 

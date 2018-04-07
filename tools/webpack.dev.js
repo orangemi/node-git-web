@@ -2,7 +2,7 @@
 
 const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const buildConfig = require('./webpack.common')
 
 module.exports = webpackMerge(buildConfig, {
@@ -11,7 +11,7 @@ module.exports = webpackMerge(buildConfig, {
     chunkFilename: '[name].bundle.js'
   },
   plugins: [
-    new ExtractTextPlugin('[name].bundle.css'),
+    // new ExtractTextPlugin('[name].bundle.css'),
     new webpack.DefinePlugin({
       '__DEBUG__': true
     })

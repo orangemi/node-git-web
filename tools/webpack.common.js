@@ -3,20 +3,13 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const AssetsPlugin = require('assets-webpack-plugin')
-// const SplitChunksPlugin = webpack.optimize.optimization.splitChunks
 const resolve = (dir) => path.join(__dirname, '..', dir)
+
+const vendorCSSPlugin = new ExtractTextPlugin({ filename: 'vendor.bundle.css', allChunks: true })
 
 module.exports = {
   entry: {
-    main: resolve('src/index.ts'),
-    vendor: [
-      // js
-      'regenerator-runtime/runtime',
-      'vue', 'vue-router', 'element-ui',
-      // 'vue-analytics',
-      // css
-      'element-ui/lib/theme-chalk/index.css'
-    ]
+    main: resolve('src/index.ts')
   },
   output: {
     path: resolve('build'),
@@ -61,14 +54,18 @@ module.exports = {
         loader: 'vue-loader' },
       { test: /\.pug$/,
         loader: 'pug-html-loader' },
+      { test: /\.css$/,
+        // use: vendorCSSPlugin.extract({ use: 'css-loader', fallback: 'style-loader' }) },
+        loader: 'style-loader!css-loader' },
       { test: /\.styl(us)?$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader', 'resolve-url-loader', {
-            loader: 'stylus-loader',
-            options: {paths: 'node_modules'}
-          }],
-          fallback: 'style-loader'
-        }) },
+        loader: 'style-loader!css-loader!stylus-loader' },
+        // use: vendorCSSPlugin.extract({
+        //   use: ['css-loader', 'resolve-url-loader', {
+        //     loader: 'stylus-loader',
+        //     options: {paths: 'node_modules'}
+        //   }],
+        //   fallback: 'style-loader'
+        // }) },
       { test: /\.(woff|woff2)(\?.*)?$/,
         loader: 'url-loader',
         options: { prefix: 'font/', limit: 5000 } },
@@ -79,8 +76,9 @@ module.exports = {
         loader: 'file-loader' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'file-loader' },
-      { test: /\.css$/,
-        use: ExtractTextPlugin.extract({ use: 'css-loader' }) }
+      // { test: /\.css$/,
+      //   use: ExtractTextPlugin.extract({ use: 'css-loader' }),
+      //   exclude: /element-ui/ }
     ]
   },
   optimization: {
@@ -95,6 +93,7 @@ module.exports = {
     }
   },
   plugins: [
+    vendorCSSPlugin,
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/),
     new AssetsPlugin({
       filename: 'assets.json',
