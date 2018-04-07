@@ -1,0 +1,13 @@
+.repo-detail
+  file-list(v-if='$route.name === "repo-detail"'
+    :repo='repo'
+    :branch='branch'
+    :tag='tag'
+    :commit='commitInfo.hash'
+  )
+  router-view(
+    :repo='repo'
+    :branch='branch'
+    :tag='tag'
+    :commit='commitInfo.hash'
+  )

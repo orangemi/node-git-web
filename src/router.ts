@@ -11,18 +11,18 @@ const router = new Router({
     path: '/repos',
     name: 'repo-list',
     component: () => import('views/repo-list/index.vue'),
-//   }, {
-//     path: '/repos/:repo',
-//     name: 'repo-detail',
-//     component: resolve => require(['views/repo-detail'], resolve),
-//     children: [{
-//       path: '',
-//       name: 'repo-detail-summary',
-//       component: resolve => require(['views/repo-detail/default'], resolve)
-//     }, {
-//       path: 'branches/:branch/tree/:path(.*)?',
-//       name: 'repo-branch-file-tree',
-//       component: resolve => require(['views/repo-detail/file-tree'], resolve)
+  }, {
+    path: '/repos/:repo',
+    name: 'repo-detail',
+    component: () => import('views/repo-detail/index.vue'),
+    children: [{
+    //   path: '',
+    //   name: 'repo-detail-summary',
+    //   component: () => import('views/repo-detail/default/index.vue'),
+    // }, {
+      path: 'branch/:branch/tree/:path(.*)?',
+      name: 'repo-branch-file-tree',
+      component: () => import('views/repo-detail/file-list/index.vue'),
 //     }, {
 //       path: 'tags/:tag/tree/:path(.*)?',
 //       name: 'repo-tag-file-tree',
@@ -47,7 +47,7 @@ const router = new Router({
 //       path: 'tags/:tag/commits',
 //       name: 'repo-tag-commit-list',
 //       component: resolve => require(['views/repo-detail/commit-list'], resolve)
-//     }]
+    }]
   }]
 })
 

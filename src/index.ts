@@ -6,6 +6,7 @@ import ElementUI from 'element-ui'
 
 import './plugins'
 import Home from 'views/home/index.vue'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(Router)
 Vue.use(ElementUI)

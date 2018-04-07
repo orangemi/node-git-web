@@ -11,7 +11,7 @@ module.exports = {
     main: resolve('src/index.ts'),
     vendor: [
       // js
-      // 'regenerator-runtime/runtime',
+      'regenerator-runtime/runtime',
       'vue', 'vue-router', 'element-ui',
       // 'vue-analytics',
       // css

@@ -1,0 +1,9 @@
+div
+  header.repo-header
+    h3 {{ repo }}
+    img.avatar(:src='avatarUrl')
+  file-list(
+    :commit='commit'
+    :repo='repo'
+    :urlPrefix='urlPrefix'
+    path='')
