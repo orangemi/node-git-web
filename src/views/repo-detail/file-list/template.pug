@@ -1,9 +1,10 @@
 div
-  //- .navi-path.breadcrum
+  .navi-path.breadcrum
     div.path
-      template(v-for='_path in paths')
+      router-link(:to='rootTreeUrl') {{ this.repo }}
+      template(v-for='_path in parentFilePaths')
         span.sperator /
-        router-link(:to='{params: {path: _path.path}}') {{ _path.name }}
+        router-link(:to='_path.url') {{ _path.name }}
 
   el-table(:data='files' v-if='files.length')
     el-table-column(label='File' prop='name')

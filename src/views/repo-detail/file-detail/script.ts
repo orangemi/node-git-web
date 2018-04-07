@@ -39,7 +39,7 @@ export default class FileDetailView extends Vue {
   }
   get parentFilePaths() {
     let prefix = '/'
-    return this.dirPath.split('/').map(dir => {
+    return this.dirPath.split('/').filter(dir => dir).map(dir => {
       const result = {
         url: this.urlPrefix + prefix + dir,
         name: dir
@@ -53,7 +53,8 @@ export default class FileDetailView extends Vue {
     return this.$route.params.path || ''
   }
   get dirPath() {
-    return this.filepath.replace(/\/[^/]+$/, '')
+    const slashIndex = this.filepath.lastIndexOf('/')
+    return ~slashIndex ? this.filepath.substring(0, slashIndex) : ''
   }
   get filename() {
     return this.filepath.replace(/^.*\//, '')
@@ -62,7 +63,8 @@ export default class FileDetailView extends Vue {
     return this.commit && (this.fileInfo.mode & 0x8000 ) && this.fileInfo.size <= 5 * 1024 * 1024
   }
   get fileType() {
-    return this.filename.replace(/^.*\./, '')
+    const dotIndex = this.filepath.lastIndexOf('.')
+    return ~dotIndex ? this.filename.substring(dotIndex + 1) : ''
   }
   get downloadUrl() {
     const urls = ['/api/repos', this.repo, 'commits', this.commit, 'blob', this.filepath]

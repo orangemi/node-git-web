@@ -31,6 +31,20 @@ export default class FileListView extends Vue {
     else urls = urls.concat(['commit', this.commit])
     return urls.join('/')
   }
+  get rootTreeUrl () {
+    return this.urlPrefix + '/tree'
+  }
+  get parentFilePaths() {
+    let prefix = '/'
+    return this.dirPath.split('/').filter(dir => dir).map(dir => {
+      const result = {
+        url: this.rootTreeUrl + prefix + dir,
+        name: dir
+      }
+      prefix = prefix + dir + '/'
+      return result
+    })
+  }
   get dirPath() {
     return this.$route.params.path || ''
   }

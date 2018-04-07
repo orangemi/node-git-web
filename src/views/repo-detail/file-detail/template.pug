@@ -1,9 +1,12 @@
 div
   .navi-path.breadcrum
     div.path
+      router-link(:to='urlPrefix') {{ this.repo }}
       template(v-for='_path in parentFilePaths')
         span.sperator /
         router-link(:to='_path.url') {{ _path.name }}
+      //- span.sperator /
+      //- span {{ fileInfo.name }}
 
   div.file-blob
     header
