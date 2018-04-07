@@ -21,7 +21,7 @@ const router = new Router({
     //   component: () => import('views/repo-detail/default/index.vue'),
     // }, {
       path: 'branch/:branch/tree/:path(.*)?',
-      name: 'repo-branch-file-tree',
+      name: 'repo-branch-tree',
       component: () => import('views/repo-detail/file-list/index.vue'),
 //     }, {
 //       path: 'tags/:tag/tree/:path(.*)?',
@@ -31,10 +31,10 @@ const router = new Router({
 //       path: 'commits/:commit/tree/:path(.*)?',
 //       name: 'repo-commit-file-tree',
 //       component: resolve => require(['views/repo-detail/file-tree'], resolve)
-//     }, {
-//       path: 'branches/:branch/blob/:path',
-//       name: 'repo-branch-commit-list2',
-//       component: resolve => require(['views/repo-detail/commit-list'], resolve)
+    }, {
+      path: 'branch/:branch/blob/:path(.*)?',
+      name: 'repo-branch-file',
+      component: () => import('views/repo-detail/file-detail/index.vue'),
 //     }, {
 //       path: 'commits/:commit/commits',
 //       name: 'repo-commit-list',

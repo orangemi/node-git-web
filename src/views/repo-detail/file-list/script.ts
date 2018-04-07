@@ -29,8 +29,6 @@ export default class FileListView extends Vue {
     if (this.branch) urls = urls.concat(['branch', this.branch])
     else if (this.tag) urls = urls.concat(['tag', this.tag])
     else urls = urls.concat(['commit', this.commit])
-    // urls.push('tree')
-    // if (this.dirPath) urls.push(this.dirPath)
     return urls.join('/')
   }
   get dirPath() {

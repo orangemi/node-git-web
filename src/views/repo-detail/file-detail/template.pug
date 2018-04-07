@@ -1,0 +1,15 @@
+div
+  .navi-path.breadcrum
+    div.path
+      template(v-for='_path in parentFilePaths')
+        span.sperator /
+        router-link(:to='_path.url') {{ _path.name }}
+
+  div.file-blob
+    header
+      div.blob-filename {{ fileInfo.name }}
+      div.blob-actions
+        a.el-button(:href='downloadUrl' :download='filename' target='_blank') Download
+
+    pre(v-if='canBlob' v-highlightjs='blob'): code(:class='fileType')
+    div.too-large-notice(v-else) File too large to show
