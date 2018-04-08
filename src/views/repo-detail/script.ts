@@ -3,11 +3,6 @@ import axios from 'axios'
 import Component from 'vue-class-component'
 import fileList from './file-list/index.vue'
 
-interface RepoInfo {
-  name: string
-  url: string
-}
-
 interface CommitInfo {
   hash: string
 }
@@ -18,8 +13,9 @@ interface CommitInfo {
   }
 })
 export default class RepoDetailView extends Vue {
-  repos: Array<RepoInfo> = []
   commitInfo: CommitInfo = {hash: ''}
+  branches: Array<string> = []
+  // selBranch: string = ''
   defaultBranch: string = ''
 
   get repo () {
@@ -43,6 +39,7 @@ export default class RepoDetailView extends Vue {
   }
   
   async fetchCommitInfo () {
+    this.branches = await this.fetchBranches()
     if (this.branch) {
       this.commitInfo = await this.fetchBranch()
     } else if (this.tag) {
@@ -50,12 +47,10 @@ export default class RepoDetailView extends Vue {
     } else if (this.commit) {
       this.commitInfo = await this.fetchCommit()
     } else {
-      const branches = await this.fetchBranches()
-      this.defaultBranch = branches[0]
+      this.defaultBranch = this.branches[0]
       this.commitInfo = await this.fetchBranch(this.defaultBranch)
     }
   }
-
   async fetchBranch (branch?: string): Promise<CommitInfo> {
     branch = branch || this.branch
     const url = ['/api/repos', this.repo, 'branches', branch].join('/')
@@ -79,5 +74,9 @@ export default class RepoDetailView extends Vue {
     const url = urlArray.join('/')
     const resp = await axios.get(url)
     return resp.data
+  }
+
+  onChangeBranch(branch: string) {
+    console.log('changing branch', branch)
   }
 }
