@@ -24,15 +24,15 @@ export default class FileDetailView extends Vue {
   fileInfo: TreeNodeInfo = {name: '', size: 0, isFile: true, mode: 0}
   blob: string = ''
 
-  branch: String
-  tag: String
-  repo: String
-  commit: String
+  branch: string
+  tag: string
+  repo: string
+  commit: string
 
   get urlPrefix () {
     let urls = ['/repos', this.repo]
-    if (this.branch) urls = urls.concat(['branch', this.branch])
-    else if (this.tag) urls = urls.concat(['tag', this.tag])
+    if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
+    else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
     else urls = urls.concat(['commit', this.commit])
     urls.push('tree')
     return urls.join('/')

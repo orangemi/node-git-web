@@ -18,16 +18,16 @@ export default class FileListView extends Vue {
   canShowEntry = false
   entry = null
 
-  branch: String
-  tag: String
+  branch: string
+  tag: string
   // path: String
-  repo: String
-  commit: String
+  repo: string
+  commit: string
 
   get urlPrefix () {
     let urls = ['/repos', this.repo]
-    if (this.branch) urls = urls.concat(['branch', this.branch])
-    else if (this.tag) urls = urls.concat(['tag', this.tag])
+    if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
+    else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
     else urls = urls.concat(['commit', this.commit])
     return urls.join('/')
   }
