@@ -21,17 +21,23 @@ export default class RepoDetailView extends Vue {
   get repo () {
     return this.$route.params.repo
   }
-  get path () {
+  get rawPath () {
     return this.$route.params.path || ''
   }
   get branch () {
-    return this.$route.params.branch || this.defaultBranch
+    return this.branches.filter(branch => this.rawPath.indexOf(branch) === 0)[0]
   }
   get tag () {
-    return this.$route.params.tag || ''
+    // const tag = this.rawPath.split('/')[0]
+    return !this.branch && !this.commit && tag || ''
   }
   get commit () {
-    return this.$route.params.commit || ''
+    const commit = this.rawPath.split('/')[0]
+    return /^[0-9a-f]{40}$/.test(commit) ? commit : ''
+  }
+  get path () {
+    const branch = this.branch || this.tag || this.commit || ''
+    return this.rawPath.substring(branch.length).replace(/^\//, '')
   }
 
   mounted () {

@@ -8,7 +8,7 @@ import {Watch} from 'vue-property-decorator'
   props: {
     branch: String,
     tag: String,
-    // path: String,
+    path: String,
     repo: String,
     commit: String,
   },
@@ -20,33 +20,33 @@ export default class FileListView extends Vue {
 
   branch: string
   tag: string
-  // path: String
+  path: string
   repo: string
   commit: string
 
-  get urlPrefix () {
-    let urls = ['/repos', this.repo]
-    if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
-    else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
-    else urls = urls.concat(['commit', this.commit])
-    return urls.join('/')
-  }
-  get rootTreeUrl () {
-    return this.urlPrefix + '/tree'
-  }
-  get parentFilePaths() {
-    let prefix = '/'
-    return this.dirPath.split('/').filter(dir => dir).map(dir => {
-      const result = {
-        url: this.rootTreeUrl + prefix + dir,
-        name: dir
-      }
-      prefix = prefix + dir + '/'
-      return result
-    })
-  }
+  // get urlPrefix () {
+  //   let urls = ['/repos', this.repo]
+  //   if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
+  //   else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
+  //   else urls = urls.concat(['commit', this.commit])
+  //   return urls.join('/')
+  // }
+  // get rootTreeUrl () {
+  //   return this.urlPrefix + '/tree'
+  // }
+  // get parentFilePaths() {
+  //   let prefix = '/'
+  //   return this.dirPath.split('/').filter(dir => dir).map(dir => {
+  //     const result = {
+  //       url: this.rootTreeUrl + prefix + dir,
+  //       name: dir
+  //     }
+  //     prefix = prefix + dir + '/'
+  //     return result
+  //   })
+  // }
   get dirPath() {
-    return this.$route.params.path || ''
+    return this.path || ''
   }
   
   @Watch('branch')
@@ -71,11 +71,12 @@ export default class FileListView extends Vue {
   }
 
   fillUrl (treeNode: any) {
+    const branch = this.branch || this.tag || this.commit
     const filepath = this.dirPath ? this.dirPath + '/' + treeNode.name : treeNode.name
     if (treeNode.isFile) {
-      return [this.urlPrefix, 'blob', filepath].join('/')
+      return ['/repos', this.repo, 'blob', branch, filepath].join('/')
     } else {
-      return [this.urlPrefix, 'tree', filepath].join('/')
+      return ['/repos', this.repo, 'tree', branch, filepath].join('/')
     }
   }
 

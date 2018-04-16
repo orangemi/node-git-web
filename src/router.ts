@@ -15,36 +15,16 @@ const router = new Router({
     name: 'repo-detail',
     component: () => import('views/repo-detail/index.vue'),
     children: [{
-    //   path: '',
-    //   name: 'repo-detail-summary',
-    //   component: () => import('views/repo-detail/default/index.vue'),
-    // }, {
-      path: 'branch/:branch/tree/:path(.*)?',
-      name: 'repo-branch-tree',
+      path: 'tree/:path(.*)?',
+      name: 'repo-tree',
       component: () => import('views/repo-detail/file-list/index.vue'),
-//     }, {
-//       path: 'tags/:tag/tree/:path(.*)?',
-//       name: 'repo-tag-file-tree',
-//       component: resolve => require(['views/repo-detail/file-tree'], resolve)
-//     }, {
-//       path: 'commits/:commit/tree/:path(.*)?',
-//       name: 'repo-commit-file-tree',
-//       component: resolve => require(['views/repo-detail/file-tree'], resolve)
     }, {
-      path: 'branch/:branch/blob/:path(.*)?',
-      name: 'repo-branch-file',
+      path: 'blob/:path(.*)?',
+      name: 'repo-blob',
       component: () => import('views/repo-detail/file-detail/index.vue'),
 //     }, {
 //       path: 'commits/:commit/commits',
 //       name: 'repo-commit-list',
-//       component: resolve => require(['views/repo-detail/commit-list'], resolve)
-//     }, {
-//       path: 'branches/:branch/commits',
-//       name: 'repo-branch-commit-list',
-//       component: resolve => require(['views/repo-detail/commit-list'], resolve)
-//     }, {
-//       path: 'tags/:tag/commits',
-//       name: 'repo-tag-commit-list',
 //       component: resolve => require(['views/repo-detail/commit-list'], resolve)
     }]
   }]

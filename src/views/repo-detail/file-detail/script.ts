@@ -15,7 +15,7 @@ interface TreeNodeInfo {
   props: {
     branch: String,
     tag: String,
-    // path: String,
+    path: String,
     repo: String,
     commit: String,
   },
@@ -25,6 +25,7 @@ export default class FileDetailView extends Vue {
   blob: string = ''
 
   branch: string
+  path: string
   tag: string
   repo: string
   commit: string
@@ -50,7 +51,7 @@ export default class FileDetailView extends Vue {
   }
 
   get filepath() {
-    return this.$route.params.path || ''
+    return this.path || ''
   }
   get dirPath() {
     const slashIndex = this.filepath.lastIndexOf('/')
