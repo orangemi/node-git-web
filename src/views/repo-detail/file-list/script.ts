@@ -71,16 +71,18 @@ export default class FileListView extends Vue {
   }
 
   fillUrl (treeNode: any) {
-    const branch = this.branch || this.tag || this.commit
+    const branchType = this.branch ? 'branch' : this.tag ? 'tag' : 'commit'
+    const branch = encodeURIComponent(this.branch || this.tag || this.commit)
     const filepath = this.dirPath ? this.dirPath + '/' + treeNode.name : treeNode.name
     if (treeNode.isFile) {
-      return ['/repos', this.repo, 'blob', branch, filepath].join('/')
+      return ['/repos', this.repo, branchType, branch, 'blob', filepath].join('/')
     } else {
-      return ['/repos', this.repo, 'tree', branch, filepath].join('/')
+      return ['/repos', this.repo, branchType, branch, 'tree', filepath].join('/')
     }
   }
 
   async fetchFiles () {
+    if (!this.commit) return
     const resp = await axios.get(['/api/repos', this.repo, 'commits', this.commit, 'tree', this.dirPath].join('/'))
     this.files = resp.data
   }
