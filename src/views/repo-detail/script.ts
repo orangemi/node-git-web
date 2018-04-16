@@ -29,7 +29,7 @@ export default class RepoDetailView extends Vue {
   }
   get tag () {
     // const tag = this.rawPath.split('/')[0]
-    return !this.branch && !this.commit && tag || ''
+    return !this.branch && !this.commit && this.tag || ''
   }
   get commit () {
     const commit = this.rawPath.split('/')[0]
