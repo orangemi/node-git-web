@@ -1,4 +1,17 @@
 div
+
+  header.file-list-header
+    div.title
+      span.author {{ commitInfo.author.name }}
+      span : 
+      span {{ commitInfo.message }}
+    div.time
+      el-tooltip.message(alter='someone')
+        span(slot='content') {{ commitInfo.committer.date | date }}
+        span {{ commitInfo.committer.date | fromNow }}
+
+    div.blob-actions
+
   //- .navi-path.breadcrum
     div.path
       router-link(:to='rootTreeUrl') {{ this.repo }}

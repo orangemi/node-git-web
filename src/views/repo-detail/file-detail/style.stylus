@@ -1,3 +1,8 @@
+.file-path
+  .separator
+    &:before, &:after
+      content: " "
+
 .file-blob
   border: 1px solid #dfe6ec
   margin-top: 15px
@@ -8,8 +13,8 @@
     line-height: 30px
     padding: 5px
 
-    .blob-filename
-      font-weight: bold
+    .title
+      // font-weight: bold
       flex-grow: 1
 
   pre

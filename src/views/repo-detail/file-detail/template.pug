@@ -1,16 +1,25 @@
 div
   .navi-path.breadcrum
-    div.path
+    div.file-path
       router-link(:to='urlPrefix') {{ this.repo }}
       template(v-for='_path in parentFilePaths')
-        span.sperator /
+        span.separator /
         router-link(:to='_path.url') {{ _path.name }}
-      //- span.sperator /
-      //- span {{ fileInfo.name }}
+      span.separator /
+      span {{ fileInfo.name }}
 
   div.file-blob
+
     header
-      div.blob-filename {{ fileInfo.name }}
+      div.title
+        span.author {{ commitInfo.author.name }}
+        span : 
+        span {{ commitInfo.message }}
+      div.time
+        el-tooltip.message(alter='someone')
+          span(slot='content') {{ commitInfo.committer.date | date }}
+          span {{ commitInfo.committer.date | fromNow }}
+
       div.blob-actions
         a.el-button(:href='downloadUrl' :download='filename' target='_blank') Download
 

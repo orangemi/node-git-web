@@ -14,7 +14,8 @@ import {Watch} from 'vue-property-decorator'
   },
 })
 export default class FileListView extends Vue {
-  files = []
+  commitInfo: CommitInfo = {hash: ''}
+  files: Array<TreeNodeInfo> = []
   canShowEntry = false
   entry = null
 
@@ -24,43 +25,14 @@ export default class FileListView extends Vue {
   repo: string
   commit: string
 
-  // get urlPrefix () {
-  //   let urls = ['/repos', this.repo]
-  //   if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
-  //   else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
-  //   else urls = urls.concat(['commit', this.commit])
-  //   return urls.join('/')
-  // }
-  // get rootTreeUrl () {
-  //   return this.urlPrefix + '/tree'
-  // }
-  // get parentFilePaths() {
-  //   let prefix = '/'
-  //   return this.dirPath.split('/').filter(dir => dir).map(dir => {
-  //     const result = {
-  //       url: this.rootTreeUrl + prefix + dir,
-  //       name: dir
-  //     }
-  //     prefix = prefix + dir + '/'
-  //     return result
-  //   })
-  // }
   get dirPath() {
     return this.path || ''
   }
   
-  // @Watch('branch')
-  // onBranchChange() {
-  //   this.fetchFiles()
-  // }
   @Watch('commit')
   onCommitChange() {
     this.fetchFiles()
   }
-  // @Watch('tag')
-  // onTagChange() {
-  //   this.fetchFiles()
-  // }
   @Watch('repo')
   onRepoChange() {
     this.fetchFiles()
@@ -82,13 +54,20 @@ export default class FileListView extends Vue {
   }
 
   async fetchFiles () {
-    console.log('filelist.fetchFiles', this.branch, this.commit)
     if (!this.commit) return
+    this.commitInfo = await this.fetchCommitInfo()
     const resp = await axios.get(['/api/repos', this.repo, 'commits', this.commit, 'tree', this.dirPath].join('/'))
-    this.files = resp.data
+    this.files = resp.data as Array<TreeNodeInfo>
+  }
+
+  async fetchCommitInfo (): Promise<CommitInfo> {
+    if (!this.commit) return
+    const url = ['/api/repos', this.repo, 'commits', this.commit].join('/')
+    const resp = await axios.get(url)
+    return resp.data as CommitInfo
   }
 
   mounted() {
-    if (this.commit) this.fetchFiles()
+    this.fetchFiles()
   }
 }

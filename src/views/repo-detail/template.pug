@@ -1,6 +1,7 @@
 .repo-detail
+  h3: router-link(:to='{name:"repo-detail"}') {{ repo }}
   el-select(:value='branch' @change='onChangeBranch')
-    el-option(v-for='_branch of branches' :value='_branch') {{ _branch }}
+    el-option(v-for='_branch of branches' :value='_branch') Branch: {{ _branch }}
   file-list(
     v-if='$route.name === "repo-detail"'
     :path='path'

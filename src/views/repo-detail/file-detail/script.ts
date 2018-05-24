@@ -3,13 +3,6 @@ import axios from 'axios'
 import Component from 'vue-class-component'
 import {Watch} from 'vue-property-decorator'
 
-interface TreeNodeInfo {
-  name: string
-  size: number
-  isFile: boolean
-  mode: number
-}
-
 @Component({
   // name: 'repo-detail-branch-tree',
   props: {
@@ -21,6 +14,7 @@ interface TreeNodeInfo {
   },
 })
 export default class FileDetailView extends Vue {
+  commitInfo: CommitInfo = {hash: '', committer: {}, author: {}}
   fileInfo: TreeNodeInfo = {name: '', size: 0, isFile: true, mode: 0}
   blob: string = ''
 
@@ -72,20 +66,12 @@ export default class FileDetailView extends Vue {
     return urls.join('/')
   }
 
-  @Watch('branch')
-  onBranchChange() {
+  @Watch('repo')
+  onRepoChange() {
     this.fetchFile()
   }
   @Watch('commit')
   onCommitChange() {
-    this.fetchFile()
-  }
-  @Watch('tag')
-  onTagChange() {
-    this.fetchFile()
-  }
-  @Watch('repo')
-  onRepoChange() {
     this.fetchFile()
   }
   @Watch('filepath')
@@ -94,11 +80,19 @@ export default class FileDetailView extends Vue {
   }
 
   async fetchFileInfo (): Promise<TreeNodeInfo> {
-    const resp = await axios.get(['/api/repos', this.repo, 'commits', this.commit, 'tree', this.dirPath].join('/'))
+    const url = ['/api/repos', this.repo, 'commits', this.commit, 'tree', this.dirPath].join('/')
+    const resp = await axios.get(url)
     const files: Array<TreeNodeInfo> = resp.data
     return files.filter(file => file.name === this.filename)[0]
   }
+
+  async fetchCommitInfo (): Promise<CommitInfo> {
+    const url = ['/api/repos', this.repo, 'commits', this.commit].join('/')
+    const resp = await axios.get(url)
+    return resp.data as CommitInfo
+  }
   async fetchFile () {
+    this.commitInfo = await this.fetchCommitInfo()
     this.fileInfo = await this.fetchFileInfo()
     if (!this.canBlob) return
     const resp = await axios.get(this.downloadUrl)

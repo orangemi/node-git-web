@@ -3,10 +3,6 @@ import axios from 'axios'
 import Component from 'vue-class-component'
 import fileList from './file-list/index.vue'
 
-interface CommitInfo {
-  hash: string
-}
-
 @Component({
   components: {
     'file-list': fileList
@@ -84,7 +80,6 @@ export default class RepoDetailView extends Vue {
   }
 
   onChangeBranch(branch: string) {
-    console.log('changing branch', branch)
     this.$router.push({name: 'repo-branch-tree', params: {type: 'branch', name: branch}})
     this.fetchCommitInfo()
   }
