@@ -49,18 +49,18 @@ export default class FileListView extends Vue {
     return this.path || ''
   }
   
-  @Watch('branch')
-  onBranchChange() {
-    this.fetchFiles()
-  }
+  // @Watch('branch')
+  // onBranchChange() {
+  //   this.fetchFiles()
+  // }
   @Watch('commit')
   onCommitChange() {
     this.fetchFiles()
   }
-  @Watch('tag')
-  onTagChange() {
-    this.fetchFiles()
-  }
+  // @Watch('tag')
+  // onTagChange() {
+  //   this.fetchFiles()
+  // }
   @Watch('repo')
   onRepoChange() {
     this.fetchFiles()
@@ -82,6 +82,7 @@ export default class FileListView extends Vue {
   }
 
   async fetchFiles () {
+    console.log('filelist.fetchFiles', this.branch, this.commit)
     if (!this.commit) return
     const resp = await axios.get(['/api/repos', this.repo, 'commits', this.commit, 'tree', this.dirPath].join('/'))
     this.files = resp.data

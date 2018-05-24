@@ -1,4 +1,4 @@
-import moment from 'moment'
+import * as moment from 'moment'
 import Vue from 'vue'
 
 Vue.filter('date', (time: Date) => {

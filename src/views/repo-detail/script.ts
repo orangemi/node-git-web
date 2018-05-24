@@ -85,5 +85,7 @@ export default class RepoDetailView extends Vue {
 
   onChangeBranch(branch: string) {
     console.log('changing branch', branch)
+    this.$router.push({name: 'repo-branch-tree', params: {type: 'branch', name: branch}})
+    this.fetchCommitInfo()
   }
 }

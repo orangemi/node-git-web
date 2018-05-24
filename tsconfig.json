@@ -11,17 +11,6 @@
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "sourceMap": true
+  }
 }

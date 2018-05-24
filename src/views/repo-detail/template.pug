@@ -1,14 +1,14 @@
 .repo-detail
-  template(v-if='$route.name === "repo-detail"')
-    el-select(:value='defaultBranch' @change='onChangeBranch')
-      el-option(v-for='_branch of branches' :value='_branch') {{ _branch }}
-    file-list(
-      :path='path'
-      :repo='repo'
-      :branch='branch'
-      :tag='tag'
-      :commit='commitInfo.hash'
-    )
+  el-select(:value='branch' @change='onChangeBranch')
+    el-option(v-for='_branch of branches' :value='_branch') {{ _branch }}
+  file-list(
+    v-if='$route.name === "repo-detail"'
+    :path='path'
+    :repo='repo'
+    :branch='branch'
+    :tag='tag'
+    :commit='commitInfo.hash'
+  )
   router-view(
     :path='path'
     :repo='repo'

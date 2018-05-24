@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const AssetsPlugin = require('assets-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 const resolve = (dir) => path.join(__dirname, '..', dir)
 
 const vendorCSSPlugin = new ExtractTextPlugin({ filename: 'vendor.bundle.css', allChunks: true })
@@ -75,7 +76,7 @@ module.exports = {
       { test: /\.svg(\?.*)?$/,
         loader: 'file-loader' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file-loader' },
+        loader: 'file-loader' }
       // { test: /\.css$/,
       //   use: ExtractTextPlugin.extract({ use: 'css-loader' }),
       //   exclude: /element-ui/ }
@@ -94,6 +95,7 @@ module.exports = {
   },
   plugins: [
     vendorCSSPlugin,
+    new VueLoaderPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|zh/),
     new AssetsPlugin({
       filename: 'assets.json',

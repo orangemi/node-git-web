@@ -1,5 +1,0 @@
-.navi-paths.breadcrum
-  line-height: 26px
-  font-size: 16px
-  .separater:before,.separater:after
-    content: " "
