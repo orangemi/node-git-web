@@ -5,7 +5,7 @@
   "author": "Orange Mi <orangemiwj@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dist": "rm -rf dist && webpack --config tools/webpack.prod.js",
+    "build": "rm -rf build && webpack --config tools/webpack.prod.js",
     "dev": "webpack-dev-server --config tools/webpack.dev.js"
   },
   "devDependencies": {
