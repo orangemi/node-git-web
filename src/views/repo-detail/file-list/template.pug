@@ -1,4 +1,10 @@
 div
+  .navi-path.breadcrum
+    div.file-path
+      router-link(:to='urlPrefix') {{ this.repo }}
+      template(v-for='_path in parentFilePaths')
+        span.separator /
+        router-link(:to='_path.url') {{ _path.name }}
 
   header.file-list-header
     div.title
@@ -11,13 +17,6 @@ div
         span {{ commitInfo.committer.date | fromNow }}
 
     div.blob-actions
-
-  //- .navi-path.breadcrum
-    div.path
-      router-link(:to='rootTreeUrl') {{ this.repo }}
-      template(v-for='_path in parentFilePaths')
-        span.sperator /
-        router-link(:to='_path.url') {{ _path.name }}
 
   el-table(:data='files' v-if='files.length')
     el-table-column(label='File' prop='name')

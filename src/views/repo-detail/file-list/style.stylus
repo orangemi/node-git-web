@@ -1,3 +1,8 @@
+.file-path
+  .separator
+    &:before, &:after
+      content: " "
+
 header.file-list-header
   display: flex
   background-color: #eef1f6

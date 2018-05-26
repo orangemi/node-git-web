@@ -14,10 +14,10 @@ import {Watch} from 'vue-property-decorator'
   },
 })
 export default class FileListView extends Vue {
-  commitInfo: CommitInfo = {hash: ''}
+  commitInfo: CommitInfo = {hash: '', author: {}, committer: {}}
   files: Array<TreeNodeInfo> = []
   canShowEntry = false
-  entry = null
+  entry = {}
 
   branch: string
   tag: string
@@ -27,6 +27,25 @@ export default class FileListView extends Vue {
 
   get dirPath() {
     return this.path || ''
+  }
+  get urlPrefix () {
+    let urls = ['/repos', this.repo]
+    if (this.branch) urls = urls.concat(['branch', encodeURIComponent(this.branch)])
+    else if (this.tag) urls = urls.concat(['tag', encodeURIComponent(this.tag)])
+    else urls = urls.concat(['commit', this.commit])
+    urls.push('tree')
+    return urls.join('/')
+  }
+  get parentFilePaths() {
+    let prefix = '/'
+    return this.dirPath.split('/').filter(dir => dir).map(dir => {
+      const result = {
+        url: this.urlPrefix + prefix + dir,
+        name: dir
+      }
+      prefix = prefix + dir + '/'
+      return result
+    })
   }
   
   @Watch('commit')
@@ -42,7 +61,7 @@ export default class FileListView extends Vue {
     this.fetchFiles()
   }
 
-  fillUrl (treeNode: any) {
+  fillUrl (treeNode: TreeNodeInfo) {
     const branchType = this.branch ? 'branch' : this.tag ? 'tag' : 'commit'
     const branch = encodeURIComponent(this.branch || this.tag || this.commit)
     const filepath = this.dirPath ? this.dirPath + '/' + treeNode.name : treeNode.name
